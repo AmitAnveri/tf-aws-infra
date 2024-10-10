@@ -30,3 +30,9 @@ variable "availability_zones" {
   description = "Availability zones for the subnets"
   default     = ["us-east-1a", "us-east-1b", "us-east-1c"]
 }
+
+variable "internet_gateway_cidr" {
+  description = "CIDR block for internet gateway routes"
+  default     = "0.0.0.0/0"
+}
+
