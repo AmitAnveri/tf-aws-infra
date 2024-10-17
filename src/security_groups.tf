@@ -43,9 +43,9 @@ resource "aws_security_group" "application_sg" {
 
   # Allow all egress traffic (outbound)
   egress {
-    from_port = 0
-    to_port   = 0
-    protocol = "-1" # Allows all protocols
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1" # Allows all protocols
     cidr_blocks = ["0.0.0.0/0"]
   }
 
