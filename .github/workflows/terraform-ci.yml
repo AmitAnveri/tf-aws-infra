@@ -22,5 +22,10 @@ jobs:
       - name: Run terraform fmt
         run: terraform fmt -recursive -check
 
+      - name: Init Terraform
+        run: terraform init
+        working-directory: ./src
+
       - name: Run terraform validate
         run: terraform validate
+        working-directory: ./src
