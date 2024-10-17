@@ -36,3 +36,21 @@ variable "internet_gateway_cidr" {
   default     = "0.0.0.0/0"
 }
 
+variable "ami_id" {
+  description = "The ID of the AMI to use for the EC2 instance"
+}
+
+variable "instance_type" {
+  description = "The EC2 instance type"
+  default     = "t2.micro"
+}
+
+variable "key_name" {
+  description = "The name of the SSH key pair to use"
+}
+
+variable "application_port" {
+  description = "Port on which the application runs"
+  type        = number
+  default     = 8080
+}
