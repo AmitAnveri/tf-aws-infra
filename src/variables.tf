@@ -54,3 +54,15 @@ variable "application_port" {
   type        = number
   default     = 8080
 }
+
+variable "volume_size" {
+  description = "The size of the EBS volume (in GiB)"
+  type        = number
+  default     = 25
+}
+
+variable "volume_type" {
+  description = "The type of EBS volume"
+  type        = string
+  default     = "gp2"
+}

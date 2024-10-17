@@ -5,8 +5,8 @@ resource "aws_instance" "web_app_instance" {
   subnet_id              = aws_subnet.public_subnets[0].id
 
   root_block_device {
-    volume_type = "gp2"
-    volume_size = 25
+    volume_type = var.volume_type
+    volume_size = var.volume_size
   }
 
   associate_public_ip_address = true
