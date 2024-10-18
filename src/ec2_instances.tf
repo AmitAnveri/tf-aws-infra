@@ -18,6 +18,8 @@ resource "aws_instance" "web_app_instance" {
     echo "DB_USERNAME=${var.db_username}" >> /etc/environment
     echo "DB_PASSWORD=${var.db_password}" >> /etc/environment
     echo "DB_NAME=${var.db_name}" >> /etc/environment
+    source /etc/environment
+    sudo systemctl restart webapp.service
   EOF
 
   tags = {
