@@ -35,6 +35,7 @@ resource "aws_db_instance" "rds_instance" {
   vpc_security_group_ids = [aws_security_group.db_security_group.id]
   publicly_accessible    = false
   multi_az               = false
+  skip_final_snapshot    = true
 
   tags = {
     Name = "${var.vpc_name}_rds_instance"
