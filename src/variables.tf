@@ -66,3 +66,44 @@ variable "volume_type" {
   type        = string
   default     = "gp2"
 }
+
+variable "family" {
+  description = "The parameter group family for the RDS instance"
+  type        = string
+  default     = "postgres16"
+}
+
+variable "engine_version" {
+  description = "The version of the database engine"
+  type        = string
+  default     = "16.3"
+}
+
+variable "instance_class" {
+  description = "The instance class for the RDS instance"
+  type        = string
+  default     = "db.t3.micro"
+}
+
+variable "db_name" {
+  description = "The name of the database to create"
+  type        = string
+  default     = "csye6225"
+}
+
+variable "db_username" {
+  description = "The master username for the RDS instance"
+  type        = string
+  default     = "csye6225"
+}
+
+variable "db_password" {
+  description = "The master password for the RDS instance"
+  type        = string
+}
+
+variable "dbengine" {
+  description = "The engine for the RDS instance"
+  type        = string
+  default     = "postgres"
+}
