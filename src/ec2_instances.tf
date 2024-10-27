@@ -4,6 +4,7 @@ resource "aws_instance" "web_app_instance" {
   vpc_security_group_ids = [aws_security_group.application_sg.id]
   subnet_id              = aws_subnet.public_subnets[0].id
 
+  iam_instance_profile = aws_iam_instance_profile.web_app_instance_profile.name
   root_block_device {
     volume_type = var.volume_type
     volume_size = var.volume_size
