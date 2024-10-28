@@ -120,5 +120,5 @@ variable "subdomain_prefix" {
 
 variable "zone_id" {
   description = "Hosted zone id"
-  type = string
+  type        = string
 }
