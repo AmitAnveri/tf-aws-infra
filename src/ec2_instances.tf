@@ -21,6 +21,10 @@ resource "aws_instance" "web_app_instance" {
     echo "DB_NAME=${var.db_name}" >> /etc/environment
     source /etc/environment
     sudo systemctl restart webapp.service
+
+    # Configure and start the CloudWatch Agent
+    sudo /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -a fetch-config -m ec2 \
+    -c file:/opt/aws/amazon-cloudwatch-agent/bin/config.json -s
   EOF
 
   tags = {
