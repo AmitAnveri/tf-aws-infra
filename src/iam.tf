@@ -43,3 +43,34 @@ resource "aws_iam_role_policy_attachment" "attach_s3_access_policy" {
   role       = aws_iam_role.web_app_role.name
   policy_arn = aws_iam_policy.s3_access_policy.arn
 }
+
+# IAM policy for CloudWatch Agent
+resource "aws_iam_policy" "cloudwatch_agent_policy" {
+  name        = "${var.vpc_name}_cloudwatch_agent_policy"
+  description = "Policy for CloudWatch Agent to publish metrics and logs"
+
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Effect = "Allow",
+        Action = [
+          "cloudwatch:PutMetricData",
+          "cloudwatch:ListMetrics",
+          "cloudwatch:GetMetricData",
+          "logs:CreateLogStream",
+          "logs:PutLogEvents",
+          "logs:DescribeLogStreams",
+          "logs:CreateLogGroup"
+        ],
+        Resource = "*"
+      }
+    ]
+  })
+}
+
+# Attach CloudWatch Agent policy to the IAM role
+resource "aws_iam_role_policy_attachment" "attach_cloudwatch_agent_policy" {
+  role       = aws_iam_role.web_app_role.name
+  policy_arn = aws_iam_policy.cloudwatch_agent_policy.arn
+}
