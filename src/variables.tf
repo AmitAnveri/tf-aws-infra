@@ -107,3 +107,18 @@ variable "dbengine" {
   type        = string
   default     = "postgres"
 }
+
+variable "domain_name" {
+  description = "The root domain name (e.g., example.com)"
+  type        = string
+}
+
+variable "subdomain_prefix" {
+  description = "The subdomain prefix (e.g., 'dev' or 'demo')"
+  type        = string
+}
+
+variable "zone_id" {
+  description = "Hosted zone id"
+  type        = string
+}

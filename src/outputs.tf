@@ -14,3 +14,8 @@ output "private_subnet_ids" {
 output "internet_gateway_id" {
   value = aws_internet_gateway.main_igw.id
 }
+
+output "app_url" {
+  value       = "http://${var.subdomain_prefix}.${var.domain_name}:${var.application_port}/"
+  description = "URL to access the web application in the root context"
+}
