@@ -4,7 +4,6 @@ resource "aws_s3_bucket" "app_images" {
 
   tags = {
     Name        = "${var.vpc_name}_app_images_bucket"
-    Environment = "Dev"
   }
 }
 
