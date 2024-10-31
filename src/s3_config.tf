@@ -3,7 +3,7 @@ resource "aws_s3_bucket" "app_images" {
   force_destroy = true
 
   tags = {
-    Name        = "${var.vpc_name}_app_images_bucket"
+    Name = "${var.vpc_name}_app_images_bucket"
   }
 }
 
