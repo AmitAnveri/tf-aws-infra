@@ -122,3 +122,8 @@ variable "zone_id" {
   description = "Hosted zone id"
   type        = string
 }
+
+variable "launch_template_name" {
+  description = "The name of the launch template"
+  default     = "web_app_launch_template"
+}
