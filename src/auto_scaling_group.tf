@@ -10,7 +10,7 @@ resource "aws_autoscaling_group" "web_app_asg" {
 
   health_check_type         = "EC2"
   health_check_grace_period = 300
-  target_group_arns = [aws_lb_target_group.web_app_tg.arn]
+  target_group_arns         = [aws_lb_target_group.web_app_tg.arn]
 
   tag {
     key                 = "Name"
