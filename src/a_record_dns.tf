@@ -1,6 +1,6 @@
-resource "aws_route53_record" "app_a_record" {
+resource "aws_route53_record" "web_app_alias" {
   zone_id = var.zone_id
-  name    = "${var.subdomain_prefix}.${var.domain_name}"
+  name    = var.subdomain_prefix
   type    = "A"
 
   alias {
