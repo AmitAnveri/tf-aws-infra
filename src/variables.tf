@@ -125,5 +125,51 @@ variable "zone_id" {
 
 variable "launch_template_name" {
   description = "The name of the launch template"
-  default     = "web_app_launch_template"
+  default     = "csye6225_asg"
+}
+
+
+# Variables
+variable "desired_capacity" {
+  default = 3
+}
+
+variable "max_size" {
+  default = 5
+}
+
+variable "min_size" {
+  default = 3
+}
+
+variable "cooldown_period" {
+  default = 60
+}
+
+variable "health_check_type" {
+  default = "EC2"
+}
+
+variable "health_check_grace_period" {
+  default = 300
+}
+
+variable "cpu_high_threshold" {
+  default = 10.0
+}
+
+variable "cpu_low_threshold" {
+  default = 7.0
+}
+
+variable "evaluation_periods" {
+  default = 2
+}
+
+variable "metric_period" {
+  default = 60
+}
+
+variable "scaling_policy_name" {
+  default = "scale_policy"
 }
