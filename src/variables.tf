@@ -173,3 +173,19 @@ variable "metric_period" {
 variable "scaling_policy_name" {
   default = "scale_policy"
 }
+
+variable "mailgun_api_key" {
+  type = string
+}
+
+variable "mailgun_domain" {
+  type = string
+}
+
+variable "verification_expiry" {
+  type = number
+}
+
+variable "lambda_jar_path" {
+  type = string
+}
