@@ -1,11 +1,12 @@
 # Secrets Manager
 resource "aws_secretsmanager_secret" "db_credentials" {
-  name        = "${var.vpc_name}_db_credentials-1"
+  name        = "${var.vpc_name}_db_credentials-2"
   description = "Database credentials for RDS access"
 
   tags = {
     Name = "${var.vpc_name}_db_credentials"
   }
+  recovery_window_in_days = 0
 }
 
 resource "aws_secretsmanager_secret_version" "db_credentials_version" {
