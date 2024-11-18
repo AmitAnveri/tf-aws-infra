@@ -29,6 +29,7 @@ echo "DB_USERNAME=${var.db_username}" >> /etc/environment
 echo "DB_PASSWORD=${var.db_password}" >> /etc/environment
 echo "DB_NAME=${var.db_name}" >> /etc/environment
 echo "AWS_S3_BUCKET=${aws_s3_bucket.app_images.bucket}" >> /etc/environment
+echo "SNS_TOPIC_ARN=${aws_sns_topic.email_verification_topic.arn}" >> /etc/environment
 source /etc/environment
 sudo systemctl restart webapp.service
 
