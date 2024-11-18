@@ -74,3 +74,26 @@ resource "aws_iam_role_policy_attachment" "attach_cloudwatch_agent_policy" {
   role       = aws_iam_role.web_app_role.name
   policy_arn = aws_iam_policy.cloudwatch_agent_policy.arn
 }
+
+resource "aws_iam_policy" "sns_publish_policy" {
+  name        = "${var.vpc_name}_sns_publish_policy"
+  description = "Policy to allow webapp to publish messages to SNS topic"
+
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Effect = "Allow",
+        Action = [
+          "sns:Publish"
+        ],
+        Resource = aws_sns_topic.email_verification_topic.arn
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "attach_sns_publish_policy" {
+  role       = aws_iam_role.web_app_role.name
+  policy_arn = aws_iam_policy.sns_publish_policy.arn
+}
