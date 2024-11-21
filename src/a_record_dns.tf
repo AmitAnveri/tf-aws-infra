@@ -1,6 +1,6 @@
 resource "aws_route53_record" "web_app_alias" {
   zone_id = var.zone_id
-  name    = var.subdomain_prefix
+  name    = "${var.subdomain_prefix}.${var.domain_name}"
   type    = "A"
 
   alias {
@@ -8,4 +8,6 @@ resource "aws_route53_record" "web_app_alias" {
     zone_id                = aws_lb.web_app_lb.zone_id
     evaluate_target_health = true
   }
+
+  depends_on = [aws_lb.web_app_lb]
 }
