@@ -97,11 +97,6 @@ variable "db_username" {
   default     = "csye6225"
 }
 
-variable "db_password" {
-  description = "The master password for the RDS instance"
-  type        = string
-}
-
 variable "dbengine" {
   description = "The engine for the RDS instance"
   type        = string

@@ -26,12 +26,33 @@ resource "aws_launch_template" "web_app_launch_template" {
 
   user_data = base64encode(<<EOF
 #!/bin/bash
-echo "DB_HOST=${aws_db_instance.rds_instance.endpoint}" >> /etc/environment
-echo "DB_USERNAME=${var.db_username}" >> /etc/environment
-echo "DB_PASSWORD=${var.db_password}" >> /etc/environment
-echo "DB_NAME=${var.db_name}" >> /etc/environment
+
+sudo apt update -y
+sudo apt install -y unzip curl
+sudo apt install -y jq
+
+curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+unzip awscliv2.zip
+sudo ./aws/install
+
+SECRET=$(aws secretsmanager get-secret-value --secret-id ${aws_secretsmanager_secret.db_credentials.id} --query 'SecretString' --output text)
+
+DB_HOST=$(echo $SECRET | jq -r '.DB_HOST')
+DB_PORT=$(echo $SECRET | jq -r '.DB_PORT')
+DB_NAME=$(echo $SECRET | jq -r '.DB_NAME')
+DB_USERNAME=$(echo $SECRET | jq -r '.DB_USERNAME')
+DB_PASSWORD=$(echo $SECRET | jq -r '.DB_PASSWORD')
+
+export DB_HOST DB_PORT DB_NAME DB_USERNAME DB_PASSWORD
+
+echo "DB_HOST=$DB_HOST" >> /etc/environment
+echo "DB_PORT=$DB_PORT" >> /etc/environment
+echo "DB_NAME=$DB_NAME" >> /etc/environment
+echo "DB_USERNAME=$DB_USERNAME" >> /etc/environment
+echo "DB_PASSWORD=$DB_PASSWORD" >> /etc/environment
 echo "AWS_S3_BUCKET=${aws_s3_bucket.app_images.bucket}" >> /etc/environment
 echo "SNS_TOPIC_ARN=${aws_sns_topic.email_verification_topic.arn}" >> /etc/environment
+
 source /etc/environment
 sudo systemctl restart webapp.service
 

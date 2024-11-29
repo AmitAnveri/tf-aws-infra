@@ -16,6 +16,6 @@ resource "aws_secretsmanager_secret_version" "db_credentials_version" {
     DB_PORT     = "5432"
     DB_NAME     = var.db_name
     DB_USERNAME = var.db_username
-    DB_PASSWORD = var.db_password
+    DB_PASSWORD = random_password.db_password.result
   })
 }
