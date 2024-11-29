@@ -19,6 +19,8 @@ resource "aws_launch_template" "web_app_launch_template" {
     ebs {
       volume_type = var.volume_type
       volume_size = var.volume_size
+      kms_key_id  = aws_kms_key.ec2_encryption_key.arn
+      encrypted   = true
     }
   }
 
