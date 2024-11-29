@@ -16,13 +16,14 @@ resource "aws_s3_bucket_public_access_block" "app_images_block" {
   restrict_public_buckets = true
 }
 
-# Enable server-side encryption for the S3 bucket
+# Enable server-side encryption for the S3 bucket using the KMS key
 resource "aws_s3_bucket_server_side_encryption_configuration" "app_images_encryption" {
   bucket = aws_s3_bucket.app_images.bucket
 
   rule {
     apply_server_side_encryption_by_default {
-      sse_algorithm = "AES256"
+      sse_algorithm     = "aws:kms"
+      kms_master_key_id = aws_kms_key.s3_encryption_key.arn
     }
   }
 }
