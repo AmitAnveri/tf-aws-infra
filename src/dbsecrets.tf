@@ -2,6 +2,7 @@
 resource "aws_secretsmanager_secret" "db_credentials" {
   name        = "${var.vpc_name}_db_credentials-2"
   description = "Database credentials for RDS access"
+  kms_key_id  = aws_kms_key.secrets_encryption_key.arn
 
   tags = {
     Name = "${var.vpc_name}_db_credentials"

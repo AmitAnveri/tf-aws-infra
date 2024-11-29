@@ -115,7 +115,7 @@ resource "aws_iam_policy" "kms_access_policy" {
           "kms:GenerateDataKey*",
           "kms:DescribeKey"
         ],
-        Resource = [aws_kms_key.ec2_encryption_key.arn, aws_kms_key.s3_encryption_key.arn]
+        Resource = [aws_kms_key.ec2_encryption_key.arn, aws_kms_key.s3_encryption_key.arn, aws_kms_key.secrets_encryption_key.arn]
       }
     ]
   })
