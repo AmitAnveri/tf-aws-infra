@@ -123,8 +123,6 @@ variable "launch_template_name" {
   default     = "csye6225_asg"
 }
 
-
-# Variables
 variable "desired_capacity" {
   default = 3
 }
@@ -182,5 +180,9 @@ variable "verification_expiry" {
 }
 
 variable "lambda_jar_path" {
+  type = string
+}
+
+variable "certification_arn" {
   type = string
 }
