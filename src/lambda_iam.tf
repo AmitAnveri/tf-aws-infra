@@ -28,14 +28,17 @@ resource "aws_iam_policy" "lambda_policy" {
           "logs:CreateLogStream",
           "logs:PutLogEvents"
         ]
-        Resource = "*"
+        Resource = "arn:aws:logs:${var.aws_region}:${data.aws_caller_identity.current.account_id}:log-group:/aws/lambda/${aws_lambda_function.email_verification_lambda.function_name}:*"
       },
       {
         Effect = "Allow"
         Action = [
           "secretsmanager:GetSecretValue"
         ]
-        Resource = aws_secretsmanager_secret.db_credentials.arn
+        Resource = [
+          aws_secretsmanager_secret.mailgun_api_key.arn,
+          aws_secretsmanager_secret.db_credentials.arn
+        ]
       },
       {
         Effect = "Allow"
@@ -54,6 +57,13 @@ resource "aws_iam_policy" "lambda_policy" {
           "ec2:DescribeVpcs"
         ]
         Resource = "*"
+      },
+      {
+        Effect = "Allow",
+        Action = [
+          "kms:Decrypt"
+        ],
+        Resource = aws_kms_key.secrets_encryption_key.arn
       }
     ]
   })
