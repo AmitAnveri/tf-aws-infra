@@ -1,7 +1,7 @@
 resource "aws_kms_key" "rds_encryption_key" {
-  description = "KMS key for RDS encryption"
+  description             = "KMS key for RDS encryption"
   rotation_period_in_days = 90
-  enable_key_rotation = true
+  enable_key_rotation     = true
   policy = jsonencode({
     Version = "2012-10-17",
     Id      = "key-default-1",
