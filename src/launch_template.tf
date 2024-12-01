@@ -1,4 +1,7 @@
 resource "aws_launch_template" "web_app_launch_template" {
+  depends_on = [
+    aws_db_instance.rds_instance, aws_secretsmanager_secret.db_credentials
+  ]
   name          = var.launch_template_name
   image_id      = var.ami_id
   instance_type = var.instance_type
@@ -19,17 +22,31 @@ resource "aws_launch_template" "web_app_launch_template" {
     ebs {
       volume_type = var.volume_type
       volume_size = var.volume_size
+      kms_key_id  = aws_kms_key.ec2_encryption_key.arn
+      encrypted   = true
     }
   }
 
   user_data = base64encode(<<EOF
 #!/bin/bash
-echo "DB_HOST=${aws_db_instance.rds_instance.endpoint}" >> /etc/environment
-echo "DB_USERNAME=${var.db_username}" >> /etc/environment
-echo "DB_PASSWORD=${var.db_password}" >> /etc/environment
-echo "DB_NAME=${var.db_name}" >> /etc/environment
+SECRET=$(aws secretsmanager get-secret-value --secret-id ${aws_secretsmanager_secret.db_credentials.id} --query 'SecretString' --output text)
+
+DB_HOST=$(echo $SECRET | jq -r '.DB_HOST')
+DB_PORT=$(echo $SECRET | jq -r '.DB_PORT')
+DB_NAME=$(echo $SECRET | jq -r '.DB_NAME')
+DB_USERNAME=$(echo $SECRET | jq -r '.DB_USERNAME')
+DB_PASSWORD=$(echo $SECRET | jq -r '.DB_PASSWORD')
+
+export DB_HOST DB_PORT DB_NAME DB_USERNAME DB_PASSWORD
+
+echo "DB_HOST=$DB_HOST" >> /etc/environment
+echo "DB_PORT=$DB_PORT" >> /etc/environment
+echo "DB_NAME=$DB_NAME" >> /etc/environment
+echo "DB_USERNAME=$DB_USERNAME" >> /etc/environment
+echo "DB_PASSWORD=$DB_PASSWORD" >> /etc/environment
 echo "AWS_S3_BUCKET=${aws_s3_bucket.app_images.bucket}" >> /etc/environment
 echo "SNS_TOPIC_ARN=${aws_sns_topic.email_verification_topic.arn}" >> /etc/environment
+
 source /etc/environment
 sudo systemctl restart webapp.service
 

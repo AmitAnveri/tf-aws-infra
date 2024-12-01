@@ -7,8 +7,7 @@ resource "aws_lambda_function" "email_verification_lambda" {
 
   environment {
     variables = {
-      MAILGUN_API_KEY     = var.mailgun_api_key
-      MAILGUN_DOMAIN      = var.mailgun_domain
+      MAILGUN_SECRET_NAME = aws_secretsmanager_secret.mailgun_api_key.name
       DB_SECRET_NAME      = aws_secretsmanager_secret.db_credentials.name
       VERIFICATION_EXPIRY = var.verification_expiry
       DOMAIN_NAME         = "${var.subdomain_prefix}.${var.domain_name}"

@@ -97,3 +97,54 @@ resource "aws_iam_role_policy_attachment" "attach_sns_publish_policy" {
   role       = aws_iam_role.web_app_role.name
   policy_arn = aws_iam_policy.sns_publish_policy.arn
 }
+
+# KMS Access Policy
+resource "aws_iam_policy" "kms_access_policy" {
+  name        = "${var.vpc_name}_kms_access_policy"
+  description = "Policy to allow EC2 instance to use KMS keys"
+
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Effect = "Allow",
+        Action = [
+          "kms:Encrypt",
+          "kms:Decrypt",
+          "kms:ReEncrypt*",
+          "kms:GenerateDataKey*",
+          "kms:DescribeKey"
+        ],
+        Resource = [aws_kms_key.ec2_encryption_key.arn, aws_kms_key.s3_encryption_key.arn, aws_kms_key.secrets_encryption_key.arn, aws_kms_key.rds_encryption_key.arn]
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "attach_kms_access_policy" {
+  role       = aws_iam_role.web_app_role.name
+  policy_arn = aws_iam_policy.kms_access_policy.arn
+}
+
+resource "aws_iam_policy" "secrets_access_policy" {
+  name        = "${var.vpc_name}_secrets_access_policy"
+  description = "Policy to allow EC2 instance to access AWS Secrets Manager"
+
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Effect = "Allow",
+        Action = [
+          "secretsmanager:GetSecretValue"
+        ],
+        Resource = aws_secretsmanager_secret.db_credentials.arn
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "attach_secrets_access_policy" {
+  role       = aws_iam_role.web_app_role.name
+  policy_arn = aws_iam_policy.secrets_access_policy.arn
+}

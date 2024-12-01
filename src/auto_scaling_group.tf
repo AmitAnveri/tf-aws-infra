@@ -1,4 +1,7 @@
 resource "aws_autoscaling_group" "web_app_asg" {
+  depends_on = [
+    aws_db_instance.rds_instance, aws_secretsmanager_secret.db_credentials
+  ]
   name                = "${var.scaling_policy_name}-asg"
   desired_capacity    = var.desired_capacity
   max_size            = var.max_size
