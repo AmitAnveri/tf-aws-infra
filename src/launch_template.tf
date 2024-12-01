@@ -1,4 +1,7 @@
 resource "aws_launch_template" "web_app_launch_template" {
+  depends_on = [
+    aws_db_instance.rds_instance, aws_secretsmanager_secret.db_credentials
+  ]
   name          = var.launch_template_name
   image_id      = var.ami_id
   instance_type = var.instance_type
@@ -26,15 +29,6 @@ resource "aws_launch_template" "web_app_launch_template" {
 
   user_data = base64encode(<<EOF
 #!/bin/bash
-
-sudo apt update -y
-sudo apt install -y unzip curl
-sudo apt install -y jq
-
-curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-unzip awscliv2.zip
-sudo ./aws/install
-
 SECRET=$(aws secretsmanager get-secret-value --secret-id ${aws_secretsmanager_secret.db_credentials.id} --query 'SecretString' --output text)
 
 DB_HOST=$(echo $SECRET | jq -r '.DB_HOST')
