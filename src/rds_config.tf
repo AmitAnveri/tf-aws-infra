@@ -36,6 +36,8 @@ resource "aws_db_instance" "rds_instance" {
   publicly_accessible    = false
   multi_az               = false
   skip_final_snapshot    = true
+  storage_encrypted      = true
+  kms_key_id             = aws_kms_key.rds_encryption_key.arn
 
   tags = {
     Name = "${var.vpc_name}_rds_instance"
